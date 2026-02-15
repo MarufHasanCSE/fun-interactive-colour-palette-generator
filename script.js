@@ -157,7 +157,7 @@ function hslToHex(h, s, l) {
 }
 
 function getColorByMode(mode, count) {
-    switch(mode) {
+    switch (mode) {
         case 'pastel': return generatePastelColor();
         case 'vibrant': return generateVibrantColor();
         case 'dark': return generateDarkColor();
@@ -180,13 +180,13 @@ function createColorBox(color, index) {
     }
     box.style.backgroundColor = color;
     box.dataset.index = index;
-    
+
     const info = document.createElement('div');
     info.className = 'color-info';
     info.textContent = color;
-    
+
     box.appendChild(info);
-    
+
     box.addEventListener('click', (e) => {
         if (lockMode) {
             toggleLock(index, box);
@@ -197,13 +197,13 @@ function createColorBox(color, index) {
             });
         }
     });
-    
+
     return box;
 }
 
 function selectColor(index, color) {
     selectedColorIndex = index;
-    
+
     document.querySelectorAll('.color-box').forEach((box, i) => {
         if (i === index) {
             box.classList.add('selected');
@@ -211,16 +211,16 @@ function selectColor(index, color) {
             box.classList.remove('selected');
         }
     });
-    
+
     selectedColorPreview.style.backgroundColor = color;
     selectedColorHex.textContent = color;
-    
+
     const rgb = hexToRgb(color);
     selectedColorRgb.textContent = `RGB: ${rgb.r}, ${rgb.g}, ${rgb.b}`;
-    
+
     const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
     selectedColorHsl.textContent = `HSL: ${hsl.h}°, ${hsl.s}%, ${hsl.l}%`;
-    
+
     hueSlider.value = hsl.h;
     saturationSlider.value = hsl.s;
     lightnessSlider.value = hsl.l;
@@ -231,21 +231,21 @@ function selectColor(index, color) {
 
 function updateSelectedColor() {
     if (selectedColorIndex === null) return;
-    
+
     const h = parseInt(hueSlider.value);
     const s = parseInt(saturationSlider.value);
     const l = parseInt(lightnessSlider.value);
-    
+
     const newColor = hslToHex(h, s, l);
     currentColors[selectedColorIndex] = newColor;
-    
+
     const colorBox = palette.children[selectedColorIndex];
     colorBox.style.backgroundColor = newColor;
     colorBox.querySelector('.color-info').textContent = newColor;
-    
+
     selectedColorPreview.style.backgroundColor = newColor;
     selectedColorHex.textContent = newColor;
-    
+
     const rgb = hexToRgb(newColor);
     selectedColorRgb.textContent = `RGB: ${rgb.r}, ${rgb.g}, ${rgb.b}`;
 }
@@ -263,11 +263,11 @@ function toggleLock(index, box) {
 function generatePalette() {
     const count = parseInt(colorCount.value);
     const mode = colorMode.value;
-    
+
     palette.innerHTML = '';
-    
+
     let newColors;
-    
+
     if (mode === 'analogous') {
         newColors = generateAnalogousColors(count);
     } else if (mode === 'complementary') {
@@ -284,13 +284,13 @@ function generatePalette() {
             }
         }
     }
-    
+
     currentColors = newColors;
-    
+
     currentColors.forEach((color, i) => {
         palette.appendChild(createColorBox(color, i));
     });
-    
+
     if (selectedColorIndex !== null && selectedColorIndex < currentColors.length) {
         selectColor(selectedColorIndex, currentColors[selectedColorIndex]);
     }
@@ -307,15 +307,15 @@ function showNotification(message = 'Copied to clipboard!') {
 function exportPalette() {
     const cssVars = currentColors.map((color, i) => `  --color-${i + 1}: ${color};`).join('\n');
     const cssExport = `:root {\n${cssVars}\n}`;
-    
+
     const jsonExport = JSON.stringify(currentColors, null, 2);
-    
+
     const arrayExport = `const colors = ${JSON.stringify(currentColors)};`;
-    
+
     document.getElementById('cssExport').value = cssExport;
     document.getElementById('jsonExport').value = jsonExport;
     document.getElementById('arrayExport').value = arrayExport;
-    
+
     exportModal.style.display = 'block';
 }
 
@@ -331,19 +331,19 @@ function savePalette() {
 function loadSavedPalettes() {
     const saved = JSON.parse(localStorage.getItem('savedPalettes') || '[]');
     savedPalettesContainer.innerHTML = '';
-    
+
     if (saved.length === 0) {
         savedPalettesContainer.innerHTML = '<p style="text-align: center; color: #999;">No saved palettes yet</p>';
         return;
     }
-    
+
     saved.forEach((colors, index) => {
         const paletteDiv = document.createElement('div');
         paletteDiv.className = 'saved-palette';
-        
+
         const colorsDiv = document.createElement('div');
         colorsDiv.className = 'saved-palette-colors';
-        
+
         colors.forEach(color => {
             const colorDiv = document.createElement('div');
             colorDiv.className = 'saved-palette-color';
@@ -354,10 +354,10 @@ function loadSavedPalettes() {
             });
             colorsDiv.appendChild(colorDiv);
         });
-        
+
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'saved-palette-actions';
-        
+
         const loadBtn = document.createElement('button');
         loadBtn.textContent = 'Load';
         loadBtn.addEventListener('click', () => {
@@ -367,7 +367,7 @@ function loadSavedPalettes() {
             lockedColors.clear();
             generatePalette();
         });
-        
+
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Delete';
         deleteBtn.addEventListener('click', () => {
@@ -375,10 +375,10 @@ function loadSavedPalettes() {
             localStorage.setItem('savedPalettes', JSON.stringify(saved));
             loadSavedPalettes();
         });
-        
+
         actionsDiv.appendChild(loadBtn);
         actionsDiv.appendChild(deleteBtn);
-        
+
         paletteDiv.appendChild(colorsDiv);
         paletteDiv.appendChild(actionsDiv);
         savedPalettesContainer.appendChild(paletteDiv);
@@ -395,11 +395,11 @@ function extractColorsFromImage(file) {
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-            
+
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const pixels = imageData.data;
             const colorMap = {};
-            
+
             for (let i = 0; i < pixels.length; i += 40) {
                 const r = pixels[i];
                 const g = pixels[i + 1];
@@ -407,19 +407,19 @@ function extractColorsFromImage(file) {
                 const hex = rgbToHex(r, g, b);
                 colorMap[hex] = (colorMap[hex] || 0) + 1;
             }
-            
+
             const sortedColors = Object.entries(colorMap)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, parseInt(colorCount.value))
                 .map(entry => entry[0]);
-            
+
             currentColors = sortedColors;
             lockedColors.clear();
             palette.innerHTML = '';
             currentColors.forEach((color, i) => {
                 palette.appendChild(createColorBox(color, i));
             });
-            
+
             showNotification('Colors extracted from image!');
         };
         img.src = e.target.result;
@@ -449,51 +449,51 @@ function showGradient() {
 function calculateContrast(color1, color2) {
     const rgb1 = hexToRgb(color1);
     const rgb2 = hexToRgb(color2);
-    
-    const l1 = 0.2126 * Math.pow(rgb1.r/255, 2.2) + 
-                0.7152 * Math.pow(rgb1.g/255, 2.2) + 
-                0.0722 * Math.pow(rgb1.b/255, 2.2);
-    const l2 = 0.2126 * Math.pow(rgb2.r/255, 2.2) + 
-                0.7152 * Math.pow(rgb2.g/255, 2.2) + 
-                0.0722 * Math.pow(rgb2.b/255, 2.2);
-    
+
+    const l1 = 0.2126 * Math.pow(rgb1.r / 255, 2.2) +
+        0.7152 * Math.pow(rgb1.g / 255, 2.2) +
+        0.0722 * Math.pow(rgb1.b / 255, 2.2);
+    const l2 = 0.2126 * Math.pow(rgb2.r / 255, 2.2) +
+        0.7152 * Math.pow(rgb2.g / 255, 2.2) +
+        0.0722 * Math.pow(rgb2.b / 255, 2.2);
+
     const lighter = Math.max(l1, l2);
     const darker = Math.min(l1, l2);
-    
+
     return ((lighter + 0.05) / (darker + 0.05)).toFixed(2);
 }
 
 function checkContrast() {
     if (contrastChecker.style.display === 'none') {
         contrastResults.innerHTML = '';
-        
+
         for (let i = 0; i < currentColors.length; i++) {
             for (let j = i + 1; j < currentColors.length; j++) {
                 const ratio = calculateContrast(currentColors[i], currentColors[j]);
                 const passAA = ratio >= 4.5;
                 const passAAA = ratio >= 7;
-                
+
                 const pairDiv = document.createElement('div');
                 pairDiv.className = 'contrast-pair';
-                
+
                 const colorsDiv = document.createElement('div');
                 colorsDiv.className = 'contrast-colors';
-                
+
                 const box1 = document.createElement('div');
                 box1.className = 'contrast-color-box';
                 box1.style.backgroundColor = currentColors[i];
-                
+
                 const box2 = document.createElement('div');
                 box2.className = 'contrast-color-box';
                 box2.style.backgroundColor = currentColors[j];
-                
+
                 colorsDiv.appendChild(box1);
                 colorsDiv.appendChild(box2);
-                
+
                 const ratioSpan = document.createElement('span');
                 ratioSpan.className = 'contrast-ratio';
                 ratioSpan.textContent = `${ratio}:1`;
-                
+
                 const statusSpan = document.createElement('span');
                 if (passAAA) {
                     statusSpan.className = 'contrast-pass';
@@ -505,14 +505,14 @@ function checkContrast() {
                     statusSpan.className = 'contrast-fail';
                     statusSpan.textContent = '✗ Fail';
                 }
-                
+
                 pairDiv.appendChild(colorsDiv);
                 pairDiv.appendChild(ratioSpan);
                 pairDiv.appendChild(statusSpan);
                 contrastResults.appendChild(pairDiv);
             }
         }
-        
+
         contrastChecker.style.display = 'block';
         contrastBtn.textContent = '❌ Hide Contrast';
     } else {
@@ -528,16 +528,16 @@ function shuffleColors() {
             do {
                 j = Math.floor(Math.random() * (i + 1));
             } while (lockedColors.has(j));
-            
+
             [currentColors[i], currentColors[j]] = [currentColors[j], currentColors[i]];
         }
     }
-    
+
     palette.innerHTML = '';
     currentColors.forEach((color, i) => {
         palette.appendChild(createColorBox(color, i));
     });
-    
+
     showNotification('Colors shuffled!');
 }
 

@@ -1,133 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Color Palette Generator</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>🎨 Color Palette Generator Pro</h1>
-        <p class="subtitle">Click any color to copy its hex code • Press Space for new palette</p>
-        
-        <div class="controls">
-            <div class="control-group">
-                <label for="colorCount">Colors:</label>
-                <input type="range" id="colorCount" min="3" max="8" value="5">
-                <span id="colorCountValue">5</span>
-            </div>
-            <div class="control-group">
-                <label for="colorMode">Mode:</label>
-                <select id="colorMode">
-                    <option value="random">Random</option>
-                    <option value="pastel">Pastel</option>
-                    <option value="vibrant">Vibrant</option>
-                    <option value="dark">Dark</option>
-                    <option value="monochrome">Monochrome</option>
-                    <option value="analogous">Analogous</option>
-                    <option value="complementary">Complementary</option>
-                    <option value="triadic">Triadic</option>
-                </select>
-            </div>
-            <div class="control-group">
-                <label>
-                    <input type="checkbox" id="autoGenerate">
-                    Auto Generate
-                </label>
-            </div>
-        </div>
+      <h1>🎨 Color Palette Generator Pro</h1>
+      <p class="subtitle">
+        Click any color to copy its hex code • Press Space for new palette
+      </p>
 
-        <div class="advanced-controls">
-            <button id="imageUploadBtn" class="secondary-btn">
-                <span>📷</span> Generate from Image
-            </button>
-            <input type="file" id="imageInput" accept="image/*" style="display: none;">
-            <button id="gradientBtn" class="secondary-btn">
-                <span>🌈</span> View Gradient
-            </button>
-            <button id="contrastBtn" class="secondary-btn">
-                <span>👁️</span> Check Contrast
-            </button>
-            <button id="shuffleBtn" class="secondary-btn">
-                <span>🔀</span> Shuffle Order
-            </button>
+      <div class="controls">
+        <div class="control-group">
+          <label for="colorCount">Colors:</label>
+          <input type="range" id="colorCount" min="3" max="8" value="5" />
+          <span id="colorCountValue">5</span>
         </div>
-        
-        <div class="palette" id="palette"></div>
+        <div class="control-group">
+          <label for="colorMode">Mode:</label>
+          <select id="colorMode">
+            <option value="random">Random</option>
+            <option value="pastel">Pastel</option>
+            <option value="vibrant">Vibrant</option>
+            <option value="dark">Dark</option>
+            <option value="monochrome">Monochrome</option>
+            <option value="analogous">Analogous</option>
+            <option value="complementary">Complementary</option>
+            <option value="triadic">Triadic</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>
+            <input type="checkbox" id="autoGenerate" />
+            Auto Generate
+          </label>
+        </div>
+      </div>
 
-        <div id="gradientPreview" class="gradient-preview" style="display: none;"></div>
+      <div class="advanced-controls">
+        <button id="imageUploadBtn" class="secondary-btn">
+          <span>📷</span> Generate from Image
+        </button>
+        <input
+          type="file"
+          id="imageInput"
+          accept="image/*"
+          style="display: none"
+        />
+        <button id="gradientBtn" class="secondary-btn">
+          <span>🌈</span> View Gradient
+        </button>
+        <button id="contrastBtn" class="secondary-btn">
+          <span>👁️</span> Check Contrast
+        </button>
+        <button id="shuffleBtn" class="secondary-btn">
+          <span>🔀</span> Shuffle Order
+        </button>
+      </div>
 
-        <div id="contrastChecker" class="contrast-checker" style="display: none;">
-            <h4>Contrast Ratios (WCAG)</h4>
-            <div id="contrastResults"></div>
-        </div>
-        
-        <div class="buttons">
-            <button id="generateBtn">🎲 Generate New Palette</button>
-            <button id="exportBtn">💾 Export Palette</button>
-            <button id="lockBtn">🔓 Lock/Unlock Colors</button>
-            <button id="favoriteBtn">⭐ Save to Favorites</button>
-        </div>
+      <div class="palette" id="palette"></div>
 
-        <div class="color-adjustments">
-            <h3>Adjust Selected Color</h3>
-            <div id="selectedColorDisplay" class="selected-color-display">
-                <div class="color-preview" id="selectedColorPreview"></div>
-                <div class="color-values">
-                    <span id="selectedColorHex">#000000</span>
-                    <span id="selectedColorRgb">RGB: 0, 0, 0</span>
-                    <span id="selectedColorHsl">HSL: 0°, 0%, 0%</span>
-                </div>
-            </div>
-            <div class="adjustment-sliders">
-                <div class="slider-group">
-                    <label>Hue: <span id="hueValue">0</span>°</label>
-                    <input type="range" id="hueSlider" min="0" max="360" value="0">
-                </div>
-                <div class="slider-group">
-                    <label>Saturation: <span id="saturationValue">0</span>%</label>
-                    <input type="range" id="saturationSlider" min="0" max="100" value="0">
-                </div>
-                <div class="slider-group">
-                    <label>Lightness: <span id="lightnessValue">0</span>%</label>
-                    <input type="range" id="lightnessSlider" min="0" max="100" value="0">
-                </div>
-            </div>
-        </div>
+      <div
+        id="gradientPreview"
+        class="gradient-preview"
+        style="display: none"
+      ></div>
 
-        <div class="saved-palettes">
-            <h3>Saved Palettes</h3>
-            <div id="savedPalettesContainer"></div>
+      <div id="contrastChecker" class="contrast-checker" style="display: none">
+        <h4>Contrast Ratios (WCAG)</h4>
+        <div id="contrastResults"></div>
+      </div>
+
+      <div class="buttons">
+        <button id="generateBtn">🎲 Generate New Palette</button>
+        <button id="exportBtn">💾 Export Palette</button>
+        <button id="lockBtn">🔓 Lock/Unlock Colors</button>
+        <button id="favoriteBtn">⭐ Save to Favorites</button>
+      </div>
+
+      <div class="color-adjustments">
+        <h3>Adjust Selected Color</h3>
+        <div id="selectedColorDisplay" class="selected-color-display">
+          <div class="color-preview" id="selectedColorPreview"></div>
+          <div class="color-values">
+            <span id="selectedColorHex">#000000</span>
+            <span id="selectedColorRgb">RGB: 0, 0, 0</span>
+            <span id="selectedColorHsl">HSL: 0°, 0%, 0%</span>
+          </div>
         </div>
+        <div class="adjustment-sliders">
+          <div class="slider-group">
+            <label>Hue: <span id="hueValue">0</span>°</label>
+            <input type="range" id="hueSlider" min="0" max="360" value="0" />
+          </div>
+          <div class="slider-group">
+            <label>Saturation: <span id="saturationValue">0</span>%</label>
+            <input
+              type="range"
+              id="saturationSlider"
+              min="0"
+              max="100"
+              value="0"
+            />
+          </div>
+          <div class="slider-group">
+            <label>Lightness: <span id="lightnessValue">0</span>%</label>
+            <input
+              type="range"
+              id="lightnessSlider"
+              min="0"
+              max="100"
+              value="0"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="saved-palettes">
+        <h3>Saved Palettes</h3>
+        <div id="savedPalettesContainer"></div>
+      </div>
     </div>
 
     <div class="notification" id="notification">Copied to clipboard!</div>
-    
+
     <div class="modal" id="exportModal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Export Palette</h2>
-            <div class="export-options">
-                <div class="export-section">
-                    <h4>CSS Variables</h4>
-                    <textarea id="cssExport" readonly></textarea>
-                    <button class="copy-export" data-target="cssExport">Copy</button>
-                </div>
-                <div class="export-section">
-                    <h4>JSON</h4>
-                    <textarea id="jsonExport" readonly></textarea>
-                    <button class="copy-export" data-target="jsonExport">Copy</button>
-                </div>
-                <div class="export-section">
-                    <h4>Array</h4>
-                    <textarea id="arrayExport" readonly></textarea>
-                    <button class="copy-export" data-target="arrayExport">Copy</button>
-                </div>
-            </div>
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Export Palette</h2>
+        <div class="export-options">
+          <div class="export-section">
+            <h4>CSS Variables</h4>
+            <textarea id="cssExport" readonly></textarea>
+            <button class="copy-export" data-target="cssExport">Copy</button>
+          </div>
+          <div class="export-section">
+            <h4>JSON</h4>
+            <textarea id="jsonExport" readonly></textarea>
+            <button class="copy-export" data-target="jsonExport">Copy</button>
+          </div>
+          <div class="export-section">
+            <h4>Array</h4>
+            <textarea id="arrayExport" readonly></textarea>
+            <button class="copy-export" data-target="arrayExport">Copy</button>
+          </div>
         </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
