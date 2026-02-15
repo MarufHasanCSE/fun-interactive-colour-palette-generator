@@ -9,16 +9,65 @@
 <body>
     <div class="container">
         <h1>🎨 Color Palette Generator</h1>
-        <p class="subtitle">Click any color to copy its hex code</p>
+        <p class="subtitle">Click any color to copy its hex code • Press Space for new palette</p>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="colorCount">Colors:</label>
+                <input type="range" id="colorCount" min="3" max="8" value="5">
+                <span id="colorCountValue">5</span>
+            </div>
+            <div class="control-group">
+                <label for="colorMode">Mode:</label>
+                <select id="colorMode">
+                    <option value="random">Random</option>
+                    <option value="pastel">Pastel</option>
+                    <option value="vibrant">Vibrant</option>
+                    <option value="dark">Dark</option>
+                    <option value="monochrome">Monochrome</option>
+                </select>
+            </div>
+        </div>
         
         <div class="palette" id="palette"></div>
         
         <div class="buttons">
             <button id="generateBtn">Generate New Palette</button>
+            <button id="exportBtn">Export Palette</button>
+            <button id="lockBtn">Lock/Unlock Colors</button>
+        </div>
+
+        <div class="saved-palettes">
+            <h3>Saved Palettes</h3>
+            <div id="savedPalettesContainer"></div>
         </div>
     </div>
 
     <div class="notification" id="notification">Copied to clipboard!</div>
+    
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Export Palette</h2>
+            <div class="export-options">
+                <div class="export-section">
+                    <h4>CSS Variables</h4>
+                    <textarea id="cssExport" readonly></textarea>
+                    <button class="copy-export" data-target="cssExport">Copy</button>
+                </div>
+                <div class="export-section">
+                    <h4>JSON</h4>
+                    <textarea id="jsonExport" readonly></textarea>
+                    <button class="copy-export" data-target="jsonExport">Copy</button>
+                </div>
+                <div class="export-section">
+                    <h4>Array</h4>
+                    <textarea id="arrayExport" readonly></textarea>
+                    <button class="copy-export" data-target="arrayExport">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
