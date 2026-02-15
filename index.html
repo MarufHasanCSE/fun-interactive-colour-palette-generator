@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎨 Color Palette Generator</h1>
+        <h1>🎨 Color Palette Generator Pro</h1>
         <p class="subtitle">Click any color to copy its hex code • Press Space for new palette</p>
         
         <div class="controls">
@@ -25,16 +25,75 @@
                     <option value="vibrant">Vibrant</option>
                     <option value="dark">Dark</option>
                     <option value="monochrome">Monochrome</option>
+                    <option value="analogous">Analogous</option>
+                    <option value="complementary">Complementary</option>
+                    <option value="triadic">Triadic</option>
                 </select>
             </div>
+            <div class="control-group">
+                <label>
+                    <input type="checkbox" id="autoGenerate">
+                    Auto Generate
+                </label>
+            </div>
+        </div>
+
+        <div class="advanced-controls">
+            <button id="imageUploadBtn" class="secondary-btn">
+                <span>📷</span> Generate from Image
+            </button>
+            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            <button id="gradientBtn" class="secondary-btn">
+                <span>🌈</span> View Gradient
+            </button>
+            <button id="contrastBtn" class="secondary-btn">
+                <span>👁️</span> Check Contrast
+            </button>
+            <button id="shuffleBtn" class="secondary-btn">
+                <span>🔀</span> Shuffle Order
+            </button>
         </div>
         
         <div class="palette" id="palette"></div>
+
+        <div id="gradientPreview" class="gradient-preview" style="display: none;"></div>
+
+        <div id="contrastChecker" class="contrast-checker" style="display: none;">
+            <h4>Contrast Ratios (WCAG)</h4>
+            <div id="contrastResults"></div>
+        </div>
         
         <div class="buttons">
-            <button id="generateBtn">Generate New Palette</button>
-            <button id="exportBtn">Export Palette</button>
-            <button id="lockBtn">Lock/Unlock Colors</button>
+            <button id="generateBtn">🎲 Generate New Palette</button>
+            <button id="exportBtn">💾 Export Palette</button>
+            <button id="lockBtn">🔓 Lock/Unlock Colors</button>
+            <button id="favoriteBtn">⭐ Save to Favorites</button>
+        </div>
+
+        <div class="color-adjustments">
+            <h3>Adjust Selected Color</h3>
+            <div id="selectedColorDisplay" class="selected-color-display">
+                <div class="color-preview" id="selectedColorPreview"></div>
+                <div class="color-values">
+                    <span id="selectedColorHex">#000000</span>
+                    <span id="selectedColorRgb">RGB: 0, 0, 0</span>
+                    <span id="selectedColorHsl">HSL: 0°, 0%, 0%</span>
+                </div>
+            </div>
+            <div class="adjustment-sliders">
+                <div class="slider-group">
+                    <label>Hue: <span id="hueValue">0</span>°</label>
+                    <input type="range" id="hueSlider" min="0" max="360" value="0">
+                </div>
+                <div class="slider-group">
+                    <label>Saturation: <span id="saturationValue">0</span>%</label>
+                    <input type="range" id="saturationSlider" min="0" max="100" value="0">
+                </div>
+                <div class="slider-group">
+                    <label>Lightness: <span id="lightnessValue">0</span>%</label>
+                    <input type="range" id="lightnessSlider" min="0" max="100" value="0">
+                </div>
+            </div>
         </div>
 
         <div class="saved-palettes">
